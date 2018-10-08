@@ -2,15 +2,13 @@ import time
 import board, busio
 import adafruit_mprls
 import array
-from morseMaps import codes
+from airconfig import codes, settings
 
 i2c = busio.I2C(board.SCL, board.SDA)
 mpr = adafruit_mprls.MPRLS(i2c)
 
-BASELINE = 0
-THRESH_LOW    = 10 # delta in hPa
-THRESH_HIGH   = 10 # delta in hPa
-DEBOUNCE = 0.005
+THRESH_LOW    = settings['sipThresh'] # delta in hPa
+THRESH_HIGH   = settings['puffThresh'] # delta in hPa
 
 DIT = 0
 DAH = 1
@@ -50,7 +48,7 @@ def sendCode(pendingChar, numShifts):
 baseline, sip_threshold , puff_threshold = pressure_sensor_init()
 
 #must be configurable - how long to wait on idle before sending the code
-acceptDelay = .50
+acceptDelay = settings['acceptDelay']
 
 #We keey the code we're building here in binary shifted bits
 pendingChar = 0
